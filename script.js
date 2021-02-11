@@ -5,14 +5,12 @@ const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
 const loader = document.getElementById('loader');
 
-// Show Loading
-const loading = () => {
+const showLoadingSpinner = () => {
     loader.hidden = false;
     quoteContainer.hidden = true;
 }
 
-// Hide Loading
-const complete = () => {
+const removeCompleteSpinner = () => {
     if (!loader.hidden) {
         quoteContainer.hidden = false;
         loader.hidden = true;
@@ -22,7 +20,7 @@ const complete = () => {
 // Get quote from API
 const getQuote = async () => {
 
-    loading();
+    showLoadingSpinner();
 
     // may need to go to this link to enable CORS
     const apiUrl = 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
@@ -42,14 +40,14 @@ const getQuote = async () => {
             quoteText.classList.remove('long-quote');  
         }
         quoteText.innerText = data.quoteText;
-        // Stop loading screen and show quote
-        complete();
+
+        removeCompleteSpinner();
+
     } catch (err) {
         getQuote();
     }
 }
 
-// Tweet Quote
 const tweetQuote = () => {
     const quote = quoteText.innerText;
     const author = authorText.innerText;
@@ -61,5 +59,5 @@ const tweetQuote = () => {
 newQuoteBtn.addEventListener('click', getQuote);
 twitterBtn.addEventListener('click', tweetQuote);
 
-// on Load
+// on Load it generates a quote
 getQuote();
